@@ -1,5 +1,6 @@
 import socket
 
+EOR = "\r\n"  # End of Response
 class RedisServer:
     def __init__(self, host='127.0.0.1', port=6379):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -31,8 +32,11 @@ class RedisServer:
         command = parts[0].upper()
 
         if command == 'PING':
-            return '+PONG'
+            response = '+PONG'
+        elif command == 'ECHO':
+            response = ''
         else:
-            return '-ERR Unknown Commnad'
+            response = '-ERR Unknown Commnad'
+        return f"{response}{EOR}"
 
 
