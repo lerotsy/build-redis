@@ -63,12 +63,17 @@ class RedisServer:
             key, expire_in = parts[1], int(parts[2])
             if key in self.data_store:
                 self.expire_times[key] = time.time() + expire_in
-                return '+OK'
+                response = '+OK'
             else:
-                return "-ERR no such key"
-
+                response = "-Error no such key"
+        elif command == 'TTL':
+            key = parts[1]
+            if key in self.expire_times:
+                response = int(self.expire_times[key] - time.time())
+            else:
+                response = '-1'
         else:
-            response = '-ERR Unknown Commnad'
+            response = '-Error Unknown Commnad'
         return f"{response}{EOR}"
 
 
