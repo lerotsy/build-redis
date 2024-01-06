@@ -37,7 +37,6 @@ class RedisServer:
             response = ''
         else:
             response = '-ERR Unknown Commnad'
-        response = '+PONG'
         return f"{response}{EOR}"
 
 
