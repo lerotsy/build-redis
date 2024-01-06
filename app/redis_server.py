@@ -1,5 +1,6 @@
 import socket
 import threading
+import time
 
 EOR = "\r\n"  # End of Response
 
@@ -11,6 +12,8 @@ class RedisServer:
         self.server_socket.bind((host, port))
         self.server_socket.listen()
         self.data_store = {}
+        self.expire_times = {}
+        threading.Thread(target=self.check_expired_keys).start()
 
     def listen(self):
         while True:
@@ -18,6 +21,16 @@ class RedisServer:
             print(f"Connection from {addr}")
             threading.Thread(target=self.handle_client,
                              args=[client_socket]).start()
+
+    def check_expired_keys(self):
+        while True:
+            # check every second
+            time.sleep(1)
+            current_time = time.time()
+            for key, expire_in in list(self.expire_times.items()):
+                if expire_in < current_time:
+                    del self.data_store[key]
+                    del self.expire_times[key]
 
     def handle_client(self, client_socket):
         try:
@@ -45,6 +58,14 @@ class RedisServer:
             return "+OK"
         elif command == 'GET':
             response = self.data_store.get(parts[1], '(nil)')
+        elif command == 'EXPIRE':
+            key, expire_in = parts[1], int(parts[2])
+            if key in self.data_store:
+                self.expire_times[key] = time.time() + expire_in
+                return '+OK'
+            else:
+                return "-ERR no such key"
+
         else:
             response = '-ERR Unknown Commnad'
         return f"{response}{EOR}"
