@@ -1,61 +1,36 @@
 [![progress-banner](https://backend.codecrafters.io/progress/redis/a2e232f6-41c5-45fc-b3e9-36d8857e45cc)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+# Python Redis Server
 
-This is a starting point for Python solutions to the
-["Build Your Own Redis" Challenge](https://codecrafters.io/challenges/redis).
+A lightweight Redis-like server implementation in Python with limited functionality.
 
-In this challenge, you'll build a toy Redis clone that's capable of handling
-basic commands like `PING`, `SET` and `GET`. Along the way we'll learn about
-event loops, the Redis protocol and more.
+## Introduction
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+This project is a simple Redis-like server written in Python. It is not intended to be a full-fledged production-ready Redis server, but rather a minimalistic version that implements some of the core functionalities of Redis for educational purposes or for simple use-cases.
 
-# Passing the first stage
+## Features
 
-The entry point for your Redis implementation is in `app/main.py`. Study and
-uncomment the relevant code, and push your changes to pass the first stage:
+The server supports the following commands:
 
-```sh
-git add .
-git commit -m "pass 1st stage" # any msg
-git push origin master
-```
+- `PING`: Checks the connection to the server. The server replies with `PONG`.
+- `ECHO`: Returns the given string back to the client.
+- `SET`: Sets a string value in the server's data store under the specified key.
+- `GET`: Retrieves the string value of a key from the server's data store. If the key does not exist, `(nil)` is returned.
+- `EXPIRE`: Sets a key's time to live in seconds. After the timeout has expired, the key will automatically be deleted.
+- `TTL`: Queries the time to live of a key.
 
-That's all!
+## Future Improvements
 
-# Stage 2 & beyond
+Potential future improvements could include more Redis functionalities, such as:
 
-Note: This section is for stages 2 and beyond.
+- Additional data types (lists, sets, sorted sets, hashes)
+- Persistence to disk
+- Transactions
+- Pub/Sub capabilities
+- More complex commands like `INCR`, `DECR`, `MSET`, etc.
 
-1. Ensure you have `python (3.x)` installed locally
-1. Run `./spawn_redis_server.sh` to run your Redis server, which is implemented
-   in `app/main.py`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+## Usage
 
-# Troubleshooting
+To start the server, run the `app.py` file. By default, the server listens on `127.0.0.1:6379`.
 
-## module `socket` has no attribute `create_server`
-
-When running your server locally, you might see an error like this:
-
-```
-Traceback (most recent call last):
-  File "/.../python3.7/runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "/.../python3.7/runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "/app/app/main.py", line 11, in <module>
-    main()
-  File "/app/app/main.py", line 6, in main
-    s = socket.create_server(("localhost", 6379), reuse_port=True)
-AttributeError: module 'socket' has no attribute 'create_server'
-```
-
-This is because `socket.create_server` was introduced in Python 3.8, and you
-might be running an older version.
-
-You can fix this by installing Python 3.8 locally and using that.
-
-If you'd like to use a different version of Python, change the `language_pack`
-value in `codecrafters.yml`.
+```bash
+python app.py
