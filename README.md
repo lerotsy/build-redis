@@ -1,7 +1,7 @@
 [![progress-banner](https://backend.codecrafters.io/progress/redis/a2e232f6-41c5-45fc-b3e9-36d8857e45cc)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
-# Python Redis Server
+# Build your own Redis server challenge from CodeCrafters
 
-A lightweight Redis-like server implementation in Python with limited functionality.
+A lightweight Redis-like server implementation in Python for Codecrafter's "Build your own Redis" challenge.
 
 ## Introduction
 
